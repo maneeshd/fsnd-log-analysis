@@ -2,7 +2,6 @@
 
 Udacity Full Stack Developer Nanodegree Project 1
 
------
 
 ## Overview
 
@@ -20,7 +19,6 @@ The tool tries to answer these 3 questions:
 2. Who are the most popular article authors of all time?
 3. On which days did more than 1% of requests lead to errors?
 
------
 
 ## Requirements
 
@@ -28,30 +26,39 @@ The tool tries to answer these 3 questions:
 - [VirtualBox](https://www.virtualbox.org/wiki/Downloads)
 - [Python >= 3.5.2](https://www.python.org/downloads/)
 
+
 ## Setup
 
 1. Install `Vagrant` and `VirtualBox`.
+
 2. Clone or download [fullstack-nanodegree-vm](https://github.com/udacity/fullstack-nanodegree-vm) repository.
+
 3. Clone or download [current(fsnd-log-analysis)](https://github.com/maneeshd/fsnd-log-analysis) repository.
+
 4. Download [newsdata.zip](https://d17h27t6h515a5.cloudfront.net/topher/2016/August/57b5f748_newsdata/newsdata.zip) and unzip to get the `newsdata.sql` file containing the database data.
+
 5. Copy the contents of `fsnd-log-analysis` and file `newsdata.sql` into directory: `fullstack-nanodegree-vm/vagrant/news` (create directory news)
+
 6. Bring up the Vagrant VM from inside `fullstack-nanodegree-vm/vagrant` using the following command (you may have to run this commands multiple times):
 
 ```shell
 $ cd fullstack-nanodegree-vm/vagrant
 $ vagrant up
 ```
+
 7. The above step will bring up the VM and install all the requirments like Python3, PostgreSQL etc. Now launch the VM using:
 
 ```shell
 $ vagrant ssh
 ```
+
 8. Change directory into `/vagrant/news` & load the database data using:
 
 ```shell
 $ cd /vagrant/news
 $ psql -d news -f newsdata.sql
 ```
+
 9. Check connection to database using:
 
 ```shell
@@ -68,6 +75,7 @@ news=> \dt;
 
 news=> \q
 ```
+
 10. Check if python package `psycopg2` is installed:
 
 ```shell
@@ -81,7 +89,6 @@ $ pip3 install psycopg2-binary
 
 *Note: The database views required are created by the tool. No need to manually create them. If required look at the `Database Views` section below.*
 
------
 
 ## Running the tool
 
@@ -93,13 +100,11 @@ From `/vagrant/news` directory inside VM run using:
 $ python3 report_gen.py
 ```
 
------
 
 ## Sample Output
 
 **Sample output can be viewed in [output.txt](output.txt)**
 
------
 
 ## Database Views
 
