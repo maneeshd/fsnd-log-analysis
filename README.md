@@ -93,6 +93,8 @@ From `/vagrant/news` directory inside VM run using:
 $ python3 report_gen.py
 ```
 
+**Sample output can be viewed in [output.txt](output.txt)**
+
 -----
 
 ### Database Views
