@@ -5,18 +5,24 @@ Udacity Full Stack Developer Nanodegree Project 1
 
 ## Overview
 
-In this project, we execute complex SQL queries on a large database to extract useful and interesting statistics.
+In this project, we execute complex SQL queries on a large database to 
+extract useful and interesting statistics.
 
-The database is part of a newspaper company's web application - containing 3 tables:
+The database is part of a newspaper company's website - containing 3 tables:
 
 1. `articles` - Contains the articles published in the newspaper.
+
 2. `authors` - Contains the authors who have published above articles.
-3. `log` - Contains a log of every HTTP request for each article recieved by the server and their status codes and timestamp.
+
+3. `log` - Contains a log of every HTTP request for each article recieved by 
+the server and their status codes and timestamp.
 
 The tool tries to answer these 3 questions:
 
 1. What are the most popular three articles of all time?
+
 2. Who are the most popular article authors of all time?
+
 3. On which days did more than 1% of requests lead to errors?
 
 
@@ -113,23 +119,26 @@ $ python3 report_gen.py
 The views it generates are:
 
 ```sql
+-- Top Articles View
 CREATE OR REPLACE VIEW top_articles AS
 SELECT A.title, A.author, COUNT(*) AS views
 FROM articles AS A, log AS L
-WHERE POSITION(A.slug in L.path)>0
+WHERE L.path=CONCAT('/article/', A.slug)
 GROUP BY A.title, A.author
 ORDER BY views DESC;
 
+-- Popular Authors View
 CREATE OR REPLACE VIEW top_authors AS
 SELECT U.name AS author, SUM(SUBQ.views) AS agg_views
 FROM (SELECT A.title, A.author, COUNT(*) AS views
 FROM articles AS A, log AS L
-WHERE POSITION(A.slug in L.path)>0
+WHERE L.path=CONCAT('/article/', A.slug)
 GROUP BY A.title, A.author) AS SUBQ, authors AS U
 WHERE SUBQ.author=U.id
 GROUP BY U.name
 ORDER BY agg_views DESC;
 
+-- Error Rate View
 CREATE OR REPLACE VIEW error_log AS
 SELECT SUBQ.day, SUBQ.error_rate
 FROM (SELECT DATE(time) AS day,ROUND(100.0*SUM(CASE status WHEN '200 OK' THEN 0 ELSE 1 END)/COUNT(status), 2) AS error_rate

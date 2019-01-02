@@ -1,10 +1,12 @@
+
+#!/usr/bin/env python3
 """
 Author: Maneesh Divana <maneeshd77@gmail.com>
 Date: 01-01-2019
+Python Interperter: 3.5.2
 
 Log Analysis Report Generator
 """
-from __future__ import print_function
 from traceback import print_exc
 from psycopg2 import connect as psql_connect
 
@@ -15,10 +17,11 @@ Q2 = """Who are the most popular article authors of all time?"""
 
 Q3 = """On which days did more than 1% of requests lead to errors?"""
 
+# DB View Statements for auto-generation in constructor
 TOP_ARTICLES_VIEW = """CREATE OR REPLACE VIEW top_articles AS
 SELECT A.title, A.author, COUNT(*) AS views
 FROM articles AS A, log AS L
-WHERE POSITION(A.slug in L.path)>0
+WHERE L.path=CONCAT('/article/', A.slug)
 GROUP BY A.title, A.author
 ORDER BY views DESC;"""
 
@@ -26,7 +29,7 @@ TOP_AUTHORS_VIEW = """CREATE OR REPLACE VIEW top_authors AS
 SELECT U.name AS author, SUM(SUBQ.views) AS agg_views
 FROM (SELECT A.title, A.author, COUNT(*) AS views
 FROM articles AS A, log AS L
-WHERE POSITION(A.slug in L.path)>0
+WHERE L.path=CONCAT('/article/', A.slug)
 GROUP BY A.title, A.author) AS SUBQ, authors AS U
 WHERE SUBQ.author=U.id
 GROUP BY U.name
